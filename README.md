@@ -6,7 +6,6 @@ A simple task manager application built with Flask.
 - Create, update, and delete tasks
 - User authentication (login/register)
 - Task categories and due dates
-- REST API for task management
 
 ## Installation
 1. Clone the repository:

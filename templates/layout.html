@@ -30,12 +30,21 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                  {% if session["user_id"] %}
                   <li>
                     <a href="#" class="nav-link text-white">
                       <i class="bi bi-list-task"></i>
                       Tasks
                     </a>
                   </li>
+                  {% else %}
+                  <li>
+                    <a href="login" class="nav-link text-white">
+
+                      Login
+                    </a>
+                  </li>
+                  {% endif %}  
                 </ul>
               </div>
             </div>

@@ -27,6 +27,7 @@ db.init_app(app)
 
 @app.route("/")
 def index():
+    print(f"Current session: {session}")
     return render_template("index.html")
 
 
@@ -57,7 +58,7 @@ def login():
         print(user, user.check_password(password))
 
         # Remember which user has logged in
-        # session["user_id"] = rows[0]["id"]
+        session["username"] = user.username
 
         # Redirect user to home page
         return redirect("/")
@@ -65,6 +66,17 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+    
+
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")   
 
 
 if __name__ == '__main__':

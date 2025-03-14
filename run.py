@@ -40,22 +40,28 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+
         # Check the data from form
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # # Ensure username was submitted
-        # if not request.form.get("username"):
-        #     return apology("must provide username", 403)
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return render_template("login.html", apology="Please, write an username")
 
-        # # Ensure password was submitted
-        # elif not request.form.get("password"):
-        #     return apology("must provide password", 403)
+        # Ensure password was submitted
+        elif not password:
+            return render_template("login.html", apology="Please, write a password")
 
         # Query database for username
         user = User.query.filter_by(username=username).first()
 
-        print(user, user.check_password(password))
+        # Ensure username exists and password is correct
+        if not user:
+            return render_template("login.html", apology="Wrong username")
+        elif not user.check_password(password):
+            return render_template("login.html", apology="Wrong password")
+
 
         # Remember which user has logged in
         session["username"] = user.username

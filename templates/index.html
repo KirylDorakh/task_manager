@@ -5,6 +5,5 @@
 {% endblock %}
 
 {% block main %}
-    <p>Hello world!!!!!!!!!!</p>
-
+    <p>Hello, {{ session.get("username") or "Guest" }}</p>
 {% endblock %}

@@ -5,3 +5,4 @@ instance/
 *.sqlite3
 *.db
 __pycache__/
+**/__pycache__/

@@ -1,3 +1,4 @@
+import datetime
 from extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -15,3 +16,14 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+    
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    description = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc))
+    tasks = db.relationship('Task', backref='project', lazy=True)
+
+    def __repr__(self):
+        return f'<Project {self.name}'  

@@ -6,4 +6,15 @@
 
 {% block main %}
     <p>Hello, {{ session.get("username") or "Guest" }}</p>
+    {% if not tasks %}
+        <p>You don't have tasks</p>
+        <small class="form-text text-muted">
+            <a href="/create_task">Create a task</a>
+        </small>
+    {% else %}
+        {% for task in tasks %}
+            <p>task</p>
+        {% endfor %}
+    {% endif %}    
+
 {% endblock %}

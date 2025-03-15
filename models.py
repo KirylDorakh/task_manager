@@ -49,7 +49,7 @@ class Task(db.Model):
                            onupdate=datetime.datetime.now(datetime.timezone.utc))
     completed = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=3)
-    status = db.Column(SQLEnum(TaskStatus, name="task_status_enum"), default=TaskStatus.TODO, nullable=False)
+    status = db.Column(SQLEnum(TaskStatus, name="task_status_enum"), default=TaskStatus.TODO.value, nullable=False)
 
     # Relationships
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=True)

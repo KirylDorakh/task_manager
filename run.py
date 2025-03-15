@@ -1,12 +1,23 @@
 import os
-from flask import Flask, session, render_template, redirect, request
+from flask import Flask, session, render_template, redirect, request, url_for
+
+# Session
 from flask_session import Session
+
+# DB Migrations
 from flask_migrate import Migrate
+
+# ENV
 from dotenv import load_dotenv
+
+# For DB errors
 from sqlalchemy.exc import IntegrityError
 
 # Import db from extensions
 from extensions import db
+
+# Import models
+from models import User, Task, Project
 
 # Load environment variables from .env
 load_dotenv()
@@ -27,18 +38,21 @@ db.init_app(app)
 # Initialize Flask-Migrate (this is critical)
 migrate = Migrate(app, db)
 
-# Import models
-from models import User
-
-
 
 @app.route("/")
 def index():
 
+     # Query database for user's information
+    user = User.query.filter_by(username=session.get("username")).first()
+
+    tasks = Task.query.filter_by(user_id=user.id).all()
+
     print("Logged in user session:", dict(session))
-    return render_template("index.html")
+
+    return render_template("index.html", tasks=tasks)
 
 
+# User
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
@@ -215,6 +229,44 @@ def change_password():
 
     # If method GET and user is not logged in
     return render_template("change_password.html")
+
+
+# Tasks
+@app.route("/create_task", methods=["GET", "POST"])
+def create_task():
+    user = User.query.filter_by(username=session.get("username")).first()
+
+    if request.method == "POST":
+        # Data from form
+        title = request.form.get("title")
+        description = request.form.get("description")
+        due_date = request.form.get("due_date")
+        priority = request.form.get("priority")
+        status = request.form.get("status")
+        project_id = request.form.get("project_id")   
+
+        user_id = user.id
+
+        new_task = Task(title=title, 
+                        description=description, 
+                        user_id=user_id, 
+                        due_date=due_date, 
+                        priority=priority, 
+                        status=status,
+                        project_id=project_id
+                        )
+
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+        except Exception as e:
+            return render_template("create_task.html", apology=f'DB Error: {str(e)}')
+
+
+
+        return redirect("/") 
+    
+    return render_template("create_task.html")
 
 
 if __name__ == '__main__':

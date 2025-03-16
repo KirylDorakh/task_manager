@@ -42,16 +42,17 @@ migrate = Migrate(app, db)
 
 @app.route("/")
 def index():
+    if session.get("username"):
 
-     # Query database for user's information
-    user = User.query.filter_by(username=session.get("username")).first()
+        # Query database for user's information
+        user = User.query.filter_by(username=session.get("username")).first()
+        tasks = Task.query.filter_by(user_id=user.id).all()
+        projects = Project.query.filter_by(user_id=user.id).all()
 
-    tasks = Task.query.filter_by(user_id=user.id).all()
-    projects = Project.query.filter_by(user_id=user.id).all()
-
-    print("Logged in user session:", dict(session))
-
-    return render_template("index.html", tasks=tasks)
+        print("Logged in user session:", dict(session))
+        return render_template("index.html", tasks=tasks, projects=projects)
+    else:   
+        return render_template("index.html")
 
 
 # User
@@ -252,6 +253,7 @@ def create_task():
 
         due_date = datetime.strptime(due_date, "%Y-%m-%d").date() if due_date else None
 
+        # Prepare data and write to DB
         new_task = Task(title=title, 
                         description=description, 
                         user_id=user_id, 
@@ -270,6 +272,33 @@ def create_task():
             return redirect("/") 
     
     return render_template("create_task.html", projects=projects)
+
+# Projects
+@app.route("/create_project", methods=["GET", "POST"])
+def create_project():
+    user = User.query.filter_by(username=session.get("username")).first()
+
+    if request.method=="POST":
+
+        # Data from form
+        name = request.form.get("name")
+        description = request.form.get("description")
+
+        user_id = user.id
+
+        # Prepare data and write to DB
+        new_project = Project(name=name, description=description, user_id=user_id)
+
+        try:
+            db.session.add(new_project)
+            db.session.commit()
+        except Exception as e:
+            return render_template("create_project.html", apology=f'DB Error: {str(e)}')
+        else:
+            return redirect("/") 
+
+    return render_template("create_project.html")
+
 
 
 if __name__ == '__main__':

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create Task
+{% endblock %}
+
+{% block main %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+        <div class="card">
+          <div class="card-header">
+            Create New Project
+          </div>
+          <div class="card-body">
+            <form action="/create_project" method="post">
+              <div class="mb-3">
+                <label for="projectName" class="form-label">Project Name</label>
+                <input type="text" class="form-control" id="projectName" name="name" placeholder="Enter project name" required>
+              </div>
+              <div class="mb-3">
+                <label for="projectDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="projectDescription" name="description" rows="3" placeholder="Enter project description"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Create Project</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if apology %}
+  <div class="alert alert-danger mt-3" role="alert">
+      <p>{{ apology }}</p>
+  </div>
+  {% endif%}
+
+{% endblock %}

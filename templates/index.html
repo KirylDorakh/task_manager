@@ -5,16 +5,26 @@
 {% endblock %}
 
 {% block main %}
-    <p>Hello, {{ session.get("username") or "Guest" }}</p>
-    {% if not tasks %}
-        <p>You don't have tasks</p>
-    {% else %}
-        {% for task in tasks %}
-            <p>{{ task.title }}</p>
+    {% if session.get("username") %}
+        {% for project in projects %}
+            <p>{{ project.name }}</p>
         {% endfor %}
-    {% endif %}   
-    <small class="form-text text-muted">
-        <a href="/create_task">Create a task</a>
-    </small> 
+        <sidebar>
+            <small class="form-text text-muted">
+                <a href="/create_project">Create a project</a>
+            </small> 
+        </sidebar>
+        <p>Hello, {{ session.get("username") or "Guest" }}</p>
+        {% if not tasks %}
+            <p>You don't have tasks</p>
+        {% else %}
+            {% for task in tasks %}
+                <p>{{ task.title }}</p>
+            {% endfor %}
+        {% endif %}   
+        <small class="form-text text-muted">
+            <a href="/create_task">Create a task</a>
+        </small> 
+    {% endif %}    
 
 {% endblock %}

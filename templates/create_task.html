@@ -19,6 +19,15 @@
                 <input type="text" class="form-control" id="taskTitle" name="title" placeholder="Enter task title" required>
               </div>
               <div class="mb-3">
+                <label for="project" class="form-label">Project</label>
+                <select class="form-select" id="project" name="project_id">
+                  <option value="None" selected>General (no project)</option>
+                  {% for project in projects %}
+                    <option value="{{ project.id }}">{{ project.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
                 <label for="taskDescription" class="form-label">Description</label>
                 <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Enter description"></textarea>
               </div>
@@ -49,5 +58,10 @@
       </div>
     </div>
   </div>
+  {% if apology %}
+  <div class="alert alert-danger mt-3" role="alert">
+      <p>{{ apology }}</p>
+  </div>
+  {% endif%}
 
 {% endblock %}

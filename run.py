@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import Flask, session, render_template, redirect, request, url_for
 
 # Session
@@ -46,6 +47,7 @@ def index():
     user = User.query.filter_by(username=session.get("username")).first()
 
     tasks = Task.query.filter_by(user_id=user.id).all()
+    projects = Project.query.filter_by(user_id=user.id).all()
 
     print("Logged in user session:", dict(session))
 
@@ -235,6 +237,7 @@ def change_password():
 @app.route("/create_task", methods=["GET", "POST"])
 def create_task():
     user = User.query.filter_by(username=session.get("username")).first()
+    projects = Project.query.filter_by(user_id=user.id).all()
 
     if request.method == "POST":
         # Data from form
@@ -246,6 +249,8 @@ def create_task():
         project_id = request.form.get("project_id")   
 
         user_id = user.id
+
+        due_date = datetime.strptime(due_date, "%Y-%m-%d").date() if due_date else None
 
         new_task = Task(title=title, 
                         description=description, 
@@ -261,12 +266,10 @@ def create_task():
             db.session.commit()
         except Exception as e:
             return render_template("create_task.html", apology=f'DB Error: {str(e)}')
-
-
-
-        return redirect("/") 
+        else:
+            return redirect("/") 
     
-    return render_template("create_task.html")
+    return render_template("create_task.html", projects=projects)
 
 
 if __name__ == '__main__':

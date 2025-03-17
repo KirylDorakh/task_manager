@@ -26,7 +26,8 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
+    # Removed the unique constraint:
+    # sa.UniqueConstraint('name')
     )
     op.create_table('task',
     sa.Column('id', sa.Integer(), nullable=False),

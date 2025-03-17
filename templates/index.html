@@ -70,7 +70,7 @@
                 <h5 class="card-title">{{ task.title }}</h5>
                 <p class="card-text">{{ task.description }}</p>
                 <p class="card-text"><small class="text-muted">Due: {{ task.due_date or "N/A" }}</small></p>
-                <p class="card-text"><small class="text-muted">Status: {{ task.status }}</small></p>
+                <p class="card-text"><small class="text-muted">Status: {{ task.status.value }}</small></p>
                 <a href="/task/{{ task.id }}" class="btn btn-primary btn-sm">View Details</a>
               </div>
             </div>

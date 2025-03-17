@@ -19,6 +19,7 @@ from extensions import db
 
 # Import models
 from models import User, Task, Project
+from enums import TaskStatus
 
 # Load environment variables from .env
 load_dotenv()
@@ -48,6 +49,7 @@ def index():
         user = User.query.filter_by(username=session.get("username")).first()
 
         if user is None:
+
             # If the user is not found, clear the session and redirect to login
             session.clear()
             return redirect(url_for("login"))
@@ -243,6 +245,10 @@ def change_password():
 # Tasks
 @app.route("/create_task", methods=["GET", "POST"])
 def create_task():
+    user = User.query.get(session.get("user_id"))
+    if not user:
+        return redirect("/login")
+    
     user = User.query.filter_by(username=session.get("username")).first()
     projects = Project.query.filter_by(user_id=user.id).all()
 
@@ -265,7 +271,7 @@ def create_task():
                         user_id=user_id, 
                         due_date=due_date, 
                         priority=priority, 
-                        status=status,
+                        status=TaskStatus.TODO.value,
                         project_id=project_id
                         )
 
@@ -276,12 +282,16 @@ def create_task():
             return render_template("create_task.html", apology=f'DB Error: {str(e)}')
         else:
             return redirect("/") 
-    
     return render_template("create_task.html", projects=projects)
+    
 
 # Projects
 @app.route("/create_project", methods=["GET", "POST"])
 def create_project():
+    user = User.query.get(session.get("user_id"))
+    if not user:
+        return redirect("/login")
+
     user = User.query.filter_by(username=session.get("username")).first()
 
     if request.method=="POST":

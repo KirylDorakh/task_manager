@@ -1,19 +1,23 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Create Task
+    Edit Task
 {% endblock %}
 
 {% block main %}
 <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+
         <div class="card">
+
           <div class="card-header">
             Create New Task
           </div>
+          
           <div class="card-body">
-            <form action="/edit_task" method="post">
+            <form action="/edit_task/{{ task.id }}" method="post">
+
               <div class="mb-3">
                 <label for="taskTitle" class="form-label">Task Title</label>
                 <input 
@@ -26,6 +30,7 @@
                   required
                 >
               </div>
+
               <div class="mb-3">
                 <label for="project" class="form-label">Project</label>
                 <select class="form-select" id="project" name="project_id">
@@ -39,6 +44,7 @@
                   {% endfor %}
                 </select>
               </div>
+
               <div class="mb-3">
                 <label for="taskDescription" class="form-label">Description</label>
                 <textarea 
@@ -49,11 +55,17 @@
                   placeholder="Enter description"
                 >{{ task.description }}</textarea>
               </div>
+              
               <div class="mb-3">
                 <label for="dueDate" class="form-label">Due Date</label>
                 <input type="date" class="form-control" id="dueDate" name="due_date" value="{{task.due_date}}">
               </div>
-              <button type="submit" class="btn btn-primary">Create Task</button>
+
+              <div>
+                <button type="submit" class="btn btn-primary">Edit Task</button>
+                <a href="/" class="btn btn-secondary">Back</a>
+              </div>
+              
             </form>
           </div>
         </div>

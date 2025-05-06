@@ -258,8 +258,8 @@ def create_task():
         title = request.form.get("title")
         description = request.form.get("description")
         due_date = request.form.get("due_date")
-        priority = request.form.get("priority")
-        status = request.form.get("status")
+        # priority = request.form.get("priority")
+        # status = request.form.get("status")
         project_id = request.form.get("project_id")   
 
         user_id = user.id
@@ -271,8 +271,6 @@ def create_task():
                         description=description, 
                         user_id=user_id, 
                         due_date=due_date, 
-                        priority=priority, 
-                        status=TaskStatus.TODO.value,
                         project_id=project_id
                         )
 
@@ -289,11 +287,31 @@ def create_task():
 @app.route("/edit_task/<int:task_id>", methods=["GET", "POST"])
 def edit_task(task_id):
     user = User.query.get(session.get("user_id"))
-    projects = Project.query.filter_by(user_id=user.id).all()
     if not user:
         return redirect("/login")
     
+    projects = Project.query.filter_by(user_id=user.id).all()
     task = Task.query.get(task_id)
+
+    if request.method=="POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+        due_date = request.form.get("due_date")
+        project_id = request.form.get("project_id")   
+        user_id = user.id
+        due_date = datetime.strptime(due_date, "%Y-%m-%d").date() if due_date else None
+
+        try:
+            task.title = title 
+            task.description = description 
+            due_date = due_date
+            project_id = project_id
+
+            db.session.commit()
+        except Exception as e:
+            return render_template("task/edit_task.html", apology=f'DB Error: {str(e)}' )
+        else:
+            return redirect("/") 
 
     return render_template("task/edit_task.html", task=task, projects= projects)
 

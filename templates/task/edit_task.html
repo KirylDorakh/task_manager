@@ -13,27 +13,45 @@
             Create New Task
           </div>
           <div class="card-body">
-            <form action="/create_task" method="post">
+            <form action="/edit_task" method="post">
               <div class="mb-3">
                 <label for="taskTitle" class="form-label">Task Title</label>
-                <input type="text" class="form-control" id="taskTitle" name="title" placeholder="Enter task title" required>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="taskTitle" 
+                  name="title" 
+                  placeholder="Enter task title" 
+                  value = "{{ task.title }}"
+                  required
+                >
               </div>
               <div class="mb-3">
                 <label for="project" class="form-label">Project</label>
                 <select class="form-select" id="project" name="project_id">
-                  <option value="None" selected>General (no project)</option>
+                  <option value="None" {% if task.project_id is none %}selected{% endif %}>
+                    General (no project)
+                  </option>  
                   {% for project in projects %}
-                    <option value="{{ project.id }}">{{ project.name }}</option>
+                    <option value="{{ project.id }}" {% if project.id == task.project_id %} selected {% endif %}>
+                    {{ project.name }}
+                  </option>
                   {% endfor %}
                 </select>
               </div>
               <div class="mb-3">
                 <label for="taskDescription" class="form-label">Description</label>
-                <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Enter description"></textarea>
+                <textarea 
+                  class="form-control" 
+                  id="taskDescription" 
+                  name="description" 
+                  rows="3" 
+                  placeholder="Enter description"
+                >{{ task.description }}</textarea>
               </div>
               <div class="mb-3">
                 <label for="dueDate" class="form-label">Due Date</label>
-                <input type="date" class="form-control" id="dueDate" name="due_date">
+                <input type="date" class="form-control" id="dueDate" name="due_date" value="{{task.due_date}}">
               </div>
               <button type="submit" class="btn btn-primary">Create Task</button>
             </form>

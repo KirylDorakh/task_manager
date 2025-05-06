@@ -100,6 +100,7 @@ def login():
 
         # Remember which user has logged in
         session["username"] = user.username
+        session["user_id"] = user.id
 
         # Redirect user to home page
         return redirect("/")
@@ -249,7 +250,7 @@ def create_task():
     if not user:
         return redirect("/login")
     
-    user = User.query.filter_by(username=session.get("username")).first()
+    # user = User.query.filter_by(username=session.get("username")).first()
     projects = Project.query.filter_by(user_id=user.id).all()
 
     if request.method == "POST":
@@ -283,6 +284,19 @@ def create_task():
         else:
             return redirect("/") 
     return render_template("create_task.html", projects=projects)
+
+
+@app.route("/edit_task/<int:task_id>", methods=["GET", "POST"])
+def edit_task(task_id):
+    user = User.query.get(session.get("user_id"))
+    projects = Project.query.filter_by(user_id=user.id).all()
+    if not user:
+        return redirect("/login")
+    
+    task = Task.query.get(task_id)
+
+    return render_template("task/edit_task.html", task=task, projects= projects)
+
     
 
 # Projects

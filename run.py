@@ -278,10 +278,10 @@ def create_task():
             db.session.add(new_task)
             db.session.commit()
         except Exception as e:
-            return render_template("create_task.html", apology=f'DB Error: {str(e)}')
+            return render_template("task/create_task.html", apology=f'DB Error: {str(e)}')
         else:
             return redirect("/") 
-    return render_template("create_task.html", projects=projects)
+    return render_template("/task/create_task.html", projects=projects)
 
 
 @app.route("/edit_task/<int:task_id>", methods=["GET", "POST"])
@@ -315,6 +315,41 @@ def edit_task(task_id):
 
     return render_template("task/edit_task.html", task=task, projects= projects)
 
+
+@app.route("/mark_done/<int:task_id>", methods=["POST"])
+def mark_done(task_id):
+    user = User.query.get(session.get("user_id"))
+    if not user:
+        return redirect("/login")
+    
+    task = Task.query.get(task_id)
+
+    if task and task.user_id == user.id:
+        try:
+            task.completed = True
+            db.session.commit()
+        except Exception as e:
+            return render_template("task/edit_task.html", apology=f'DB Error: {str(e)}' )
+
+    return redirect("/")
+
+
+@app.route("/delete_task/<int:task_id>", methods=["POST"])
+def delete_task(task_id):
+    user = User.query.get(session.get("user_id"))
+    if not user:
+        return redirect("/login")
+    
+    task = Task.query.get(task_id)
+
+    if task and task.user_id == user.id:
+        try:
+            db.session.delete(task)
+            db.session.commit()
+        except Exception as e:
+            return render_template("task/edit_task.html", task=task, apology=f"Error deleting task: {str(e)}")
+
+    return redirect("/")    
     
 
 # Projects

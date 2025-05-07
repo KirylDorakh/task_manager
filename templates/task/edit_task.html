@@ -11,13 +11,21 @@
 
         <div class="card">
 
-          <div class="card-header">
-            Create New Task
+          <div class="card-header d-flex justify-content-between align-items-center">
+              <span>Task Details</span>
+              <div>
+                <form action="/mark_done/{{ task.id }}" method="post" class="d-inline">
+                  <button type="submit" class="btn btn-outline-success btn-sm" title="Mark as Done">Mark as Done</button>
+                </form>
+                <form action="/delete_task/{{ task.id }}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this task?');">
+                  <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete Task">Delete</button>
+                </form>
+              </div>
           </div>
           
           <div class="card-body">
-            <form action="/edit_task/{{ task.id }}" method="post">
 
+            <form action="/edit_task/{{ task.id }}" method="post">
               <div class="mb-3">
                 <label for="taskTitle" class="form-label">Task Title</label>
                 <input 

@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, date
 from flask import Flask, session, render_template, redirect, request, url_for
 
 # Session
@@ -37,7 +37,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 # initialize the database
 db.init_app(app)
 
-# Initialize Flask-Migrate (this is critical)
+# Initialize Flask-Migrate
 migrate = Migrate(app, db)
 
 
@@ -49,16 +49,32 @@ def index():
         user = User.query.filter_by(username=session.get("username")).first()
 
         if user is None:
-
             # If the user is not found, clear the session and redirect to login
             session.clear()
             return redirect(url_for("login"))
+        
+        # For tasks
+        project_id = request.args.get("project_id")
+        
+        # Filter for tasks
+        query = Task.query.filter_by(user_id=user.id, completed=False)
 
-        tasks = Task.query.filter_by(user_id=user.id).all()
+        if project_id is None:
+            query = query.filter_by(project_id="None")
+        else:
+            query = query.filter_by(project_id=int(project_id))  
+
+        tasks = query.all()      
+
+        # today = date.today()
+        # tasks = Task.query.filter(Task.due_date == today).all()
+
+        # For bar
         projects = Project.query.filter_by(user_id=user.id).all()
 
-        print("Logged in user session:", dict(session))
-        return render_template("index.html", tasks=tasks, projects=projects)
+        # print("Logged in user session:", dict(session))
+        print(project_id)
+        return render_template("index.html", tasks=tasks, projects=projects, active_project_id=project_id)
     else:   
         return render_template("index.html")
 

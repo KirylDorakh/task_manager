@@ -17,11 +17,17 @@
           </h6>
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="/tasks/general">General Tasks</a>
+              <a class="nav-link {% if active_project_id is none %} fw-bold text-primary {% endif %}" 
+                 href="/">
+                 General Tasks
+              </a>
             </li>
             {% for project in projects %}
             <li class="nav-item">
-              <a class="nav-link" href="/tasks/project/{{ project.id }}">{{ project.name }}</a>
+              <a class="nav-link {% if active_project_id == project.id %} fw-bold text-primary {% endif %}" 
+                 href="/?project_id={{ project.id }}">
+              {{ project.name }}
+              </a>
             </li>
             {% endfor %}
 
@@ -45,6 +51,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/tasks/overdue">Overdue Tasks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger" href="/tasks/completed">Completed Tasks</a>
             </li>
           </ul>
         </div>

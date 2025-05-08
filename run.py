@@ -41,6 +41,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+# Main page
 @app.route("/")
 def index():
     if session.get("username"):
@@ -62,18 +63,24 @@ def index():
         if project_id is None:
             query = query.filter_by(project_id="None")
         else:
-            query = query.filter_by(project_id=int(project_id))  
-
+            project_id = int(project_id) 
+            query = query.filter_by(project_id=project_id)  
         tasks = query.all()      
 
         # today = date.today()
         # tasks = Task.query.filter(Task.due_date == today).all()
 
-        # For bar
+        # For sidebar
         projects = Project.query.filter_by(user_id=user.id).all()
 
         # print("Logged in user session:", dict(session))
-        print(project_id)
+        print(project_id, type(project_id))
+
+        # To show completed tasks
+        if "completed" in request.args:
+            tasks = Task.query.filter_by(user_id=user.id, completed=True).all()
+            project_id = "completed"
+
         return render_template("index.html", tasks=tasks, projects=projects, active_project_id=project_id)
     else:   
         return render_template("index.html")

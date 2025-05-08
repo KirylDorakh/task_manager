@@ -6,9 +6,11 @@
 
 {% block main %}
   {% if session.get("username") %}
+
   <!-- Dashboard view for logged in users -->
   <div class="container-fluid">
     <div class="row">
+
       <!-- Sidebar (Projects & Filters) -->
       <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="position-sticky pt-3">
@@ -26,7 +28,7 @@
             <li class="nav-item">
               <a class="nav-link {% if active_project_id == project.id %} fw-bold text-primary {% endif %}" 
                  href="/?project_id={{ project.id }}">
-              {{ project.name }}
+                {{ project.name }}
               </a>
             </li>
             {% endfor %}
@@ -52,8 +54,14 @@
             <li class="nav-item">
               <a class="nav-link" href="/tasks/overdue">Overdue Tasks</a>
             </li>
+          </ul>
+          <hr>
+          <ul class="nav flex-column mb-2">
             <li class="nav-item">
-              <a class="nav-link text-danger" href="/tasks/completed">Completed Tasks</a>
+              <a class="nav-link text-danger {% if active_project_id == "completed" %} fw-bold text-primary {% endif %}" 
+                 href="/?completed">
+                 Completed Tasks
+                </a>
             </li>
           </ul>
         </div>
@@ -62,7 +70,18 @@
       <!-- Main Content (Task List) -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Dashboard</h1>
+          {% if active_project_id is none %}
+            <h1 class="h2">General Tasks</h1>
+          {% elif active_project_id == "completed" %}  
+            <h1 class="h2">Completed Tasks</h1>
+          {% else %}
+            {% for project in projects %}
+              {% if project.id == active_project_id %}
+                <h1 class="h2">{{project.name}} Tasks</h1>
+              {% endif %}
+            {% endfor %}  
+          {% endif %}  
+          
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
               <a href="/create_task" class="btn btn-sm btn-outline-secondary">New Task</a>

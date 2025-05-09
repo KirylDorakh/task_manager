@@ -357,6 +357,25 @@ def mark_done(task_id):
     return redirect("/")
 
 
+@app.route("/mark_done_ajax/<int:task_id>", methods=["POST"])
+def mark_done_ajax(task_id):
+    user = User.query.get(session.get("user_id"))
+    if not user:
+        return redirect("/login")
+
+    task = Task.query.get(task_id)
+    if not task or task.user_id != user.id:
+        return {"error": "Task not found or forbidden"}, 403
+    
+    try:
+        task.completed = True
+        db.session.commit()
+        return {"message": "Task marked as completed"}, 200
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
+
 @app.route("/delete_task/<int:task_id>", methods=["POST"])
 def delete_task(task_id):
     user = User.query.get(session.get("user_id"))

@@ -98,7 +98,11 @@
                   </div>
                   <div>
                     <a href="/edit_task/{{ task.id }}" class="btn btn-sm btn-primary">Details</a>
-                    <button class="btn btn-sm btn-success" onclick="markDone({{ task.id }})">Done</button>
+                    {% if not task.completed %}
+                      <button class="btn btn-sm btn-success" onclick="markDone({{ task.id }})">Done</button>
+                    {% else %}
+                      <button class="btn btn-sm btn-warning" onclick="markUndone({{ task.id }})">Undone</button>
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -124,6 +128,7 @@
   {% block scripts %}
     <script src="/static/js/filters.js"></script>
     <script src="/static/js/markDone.js"></script>
+    <script src="/static/js/markUndone.js"></script>
   {% endblock %}
 
 

@@ -46,3 +46,4 @@ Task Manager is a lightweight web application for creating, organizing, and trac
 5.	Run the app
 
    flask run
+   

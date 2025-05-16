@@ -21,10 +21,10 @@ from extensions import db
 from models import User, Task, Project
 from enums import TaskStatus
 
+app = Flask(__name__)
+
 # Load environment variables from .env
 load_dotenv()
-
-app = Flask(__name__)
 
 # Use environment variables
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -443,3 +443,7 @@ def create_project():
             return redirect("/") 
 
     return render_template("create_project.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

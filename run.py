@@ -283,7 +283,8 @@ def create_task():
         due_date = request.form.get("due_date")
         # priority = request.form.get("priority")
         # status = request.form.get("status")
-        project_id = request.form.get("project_id")   
+        project_id = request.form.get("project_id")  
+        project_id = int(project_id) if project_id and project_id != "None" else None 
 
         user_id = user.id
 
@@ -320,7 +321,8 @@ def edit_task(task_id):
         title = request.form.get("title")
         description = request.form.get("description")
         due_date = request.form.get("due_date")
-        project_id = request.form.get("project_id")   
+        project_id = request.form.get("project_id") 
+        project_id = int(project_id) if project_id and project_id != "None" else None  
         user_id = user.id
         due_date = datetime.strptime(due_date, "%Y-%m-%d").date() if due_date else None
 

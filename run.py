@@ -61,7 +61,7 @@ def index():
         query = Task.query.filter_by(user_id=user.id, completed=False)
 
         if project_id is None:
-            query = query.filter_by(project_id="None")
+            query = query.filter(Task.project_id.is_(None))
         else:
             project_id = int(project_id) 
             query = query.filter_by(project_id=project_id)  

@@ -14,6 +14,9 @@ from dotenv import load_dotenv
 # For DB errors
 from sqlalchemy.exc import IntegrityError
 
+# Email
+from flask_mail import Mail, Message
+
 # Import db from extensions
 from extensions import db
 
@@ -39,6 +42,15 @@ db.init_app(app)
 
 # Initialize Flask-Migrate
 migrate = Migrate(app, db)
+
+# Email config
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
+app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
+
+mail = Mail(app)
 
 
 # Main page
@@ -443,6 +455,31 @@ def create_project():
             return redirect("/") 
 
     return render_template("create_project.html")
+
+
+# Contatc
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        subject = request.form.get("subject")
+        message = request.form.get("message")
+
+        msg = Message(subject=f"Subject: {subject}",
+                      sender=email,
+                      recipients=[os.getenv("MAIL_USERNAME")],
+                      body=f"User: {name}\nEmail: {email}\n{message}")
+        
+        try:
+            mail.send(msg)
+            return render_template("contact.html", success="Your message has been sent! Thank you!")
+        except Exception as e:
+            return render_template("contact.html", error="Error sending message" + str(e))
+
+        
+    
+    return render_template("contact.html")
 
 
 if __name__ == "__main__":

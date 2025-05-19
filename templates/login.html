@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/login" method="post">
+<div class="container my-5" style="max-width: 400px;">
+    <form action="/login" method="post" class="text-center">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
         </div>
@@ -15,7 +16,7 @@
                 <a href="/change_password">Change password</a>
             </small>
         </div>
-        <button class="btn btn-primary" type="submit">Log In</button>
+        <button class="btn btn-primary d-block mx-auto" type="submit">Log In</button>
     </form>
     {% if apology %}
         <div class="alert alert-danger mt-3" role="alert">
@@ -26,4 +27,5 @@
             <p>{{ success }}</p>
         </div>
     {% endif %}
+</div>
 {% endblock %}

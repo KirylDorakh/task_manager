@@ -18,6 +18,9 @@
           {{ project.name }}
         </a>
       {% endfor %}
+      <a href="/?completed" class="btn btn-outline-danger btn-sm {% if active_project_id == 'completed' %}active fw-bold{% endif %}">
+        Completed
+      </a>
       <a href="/create_project" class="btn btn-sm btn-outline-primary">
         New Project
       </a>

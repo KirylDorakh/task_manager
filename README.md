@@ -1,11 +1,13 @@
 # SimplyDone: Task Manager
 
-#### Video Demo:  <URL HERE>
-
-#### Description:
+## Video Demo:  (https://youtu.be/url1wPaF974)
 
 ## About the Project
-SimplyDone is a web-based task management application developed as the final project for CS50x. The app allows users to register, create and manage tasks and projects, and track their progress. SimplyDone was built using Python (Flask), HTML, CSS (Bootstrap), and SQLite3, and is deployed at https://simplydone-snfa.onrender.com.
+SimplyDone is a web-based task management application developed as the final project for CS50x. The app allows users to register, create and manage tasks and projects, and track their progress. 
+The app was built using Flask (Python), SQLAlchemy, Bootstrap, and JavaScript. It is deployed and publicly accessible at: 
+
+👉  (https://simplydone-snfa.onrender.com)
+
 While the core features are already working, I plan to improve the UI and security and eventually add calendar views, reminders, and task sharing for team collaboration.
 
 ## Features
@@ -17,6 +19,7 @@ While the core features are already working, I plan to improve the UI and securi
 - Design with Bootstrap
 - Filter options for today’s, upcoming, and overdue tasks
 - Deployment online for public access on Render
+- Contact form with email integration
 
 ## Tech Stack
 - Backend: Python, Flask
@@ -35,10 +38,9 @@ While the core features are already working, I plan to improve the UI and securi
       login.html, register.html, change_password.html: Authentication views
       task/create_task.html, task/edit_task.html: Task forms
       create_project.html: Project creation form
+      contact.html: Contact with me
 - static/: Contains static resources like CSS and JavaScript. For instance:
-
       styles.css: Contains custom styling (empty)
-
       filters.js, markDone.js, markUndone.js: JavaScript files for filtering and AJAX task updates
 - requirements.txt: All Python dependencies needed for running the application
 - .env: Stores secret keys and DB connection URI locally during development
@@ -67,6 +69,8 @@ While the core features are already working, I plan to improve the UI and securi
 
    SECRET_KEY=your_secret_key
    SQLALCHEMY_DATABASE_URI=sqlite:///task_manager.db
+   MAIL_USERNAME=your_email@gmail.com
+   MAIL_PASSWORD=your_app_password
 
 4. Set up the database
 
@@ -84,10 +88,10 @@ During development, I occasionally used ChatGPT to understand error messages and
 ## Final Notes
 This project became larger than expected, but it was important to see it through. I’m proud of the final result: an app that works, is online, and can be used. You can try it at simplydone-snfa.onrender.com. The source code is on GitHub.
 
-Future plans include:
-Adding calendar and deadline reminders
-Task sharing between users
-Notifications (email/push)
-OAuth login options
-Stronger security (CSRF, HTTPS-only cookies, etc.)
-Visual polishing and animations
+## Future Plans
+- Calendar view and reminders
+- Team collaboration (task sharing)
+- OAuth login (Google, GitHub)
+- Email and push notifications
+- Stronger security (CSRF tokens, HTTPS-only cookies)
+- UI animations and visual polish

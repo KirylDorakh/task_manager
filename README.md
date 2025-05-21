@@ -1,12 +1,12 @@
 # SimplyDone: Task Manager
 
-## Video Demo:  (https://youtu.be/url1wPaF974)
+## Video Demo:  https://youtu.be/url1wPaF974
 
 ## About the Project
 SimplyDone is a web-based task management application developed as the final project for CS50x. The app allows users to register, create and manage tasks and projects, and track their progress. 
 The app was built using Flask (Python), SQLAlchemy, Bootstrap, and JavaScript. It is deployed and publicly accessible at: 
 
-👉  (https://simplydone-snfa.onrender.com)
+👉  https://simplydone-snfa.onrender.com
 
 While the core features are already working, I plan to improve the UI and security and eventually add calendar views, reminders, and task sharing for team collaboration.
 
